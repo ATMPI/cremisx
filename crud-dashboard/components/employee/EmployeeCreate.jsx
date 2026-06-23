@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router';
-import useNotifications from '../hooks/useNotifications/useNotifications';
+import * as React from "react";
+import { useNavigate } from "react-router";
+import useNotifications from "../../hooks/useNotifications/useNotifications";
 import {
   createOne as createEmployee,
   validate as validateEmployee,
-} from '../data/employees';
-import EmployeeForm from './EmployeeForm';
-import PageContainer from './PageContainer';
+} from "../../data/employees";
+import EmployeeForm from "./EmployeeForm";
+import PageContainer from "../PageContainer";
 
 const INITIAL_FORM_VALUES = {
-  role: 'Market',
+  role: "Market",
   isFullTime: true,
 };
 
@@ -54,7 +54,7 @@ export default function EmployeeCreate() {
       setFormValues(newFormValues);
       validateField(newFormValues);
     },
-    [formValues, formErrors, setFormErrors, setFormValues],
+    [formValues, formErrors, setFormErrors, setFormValues]
   );
 
   const handleFormReset = React.useCallback(() => {
@@ -65,7 +65,9 @@ export default function EmployeeCreate() {
     const { issues } = validateEmployee(formValues);
     if (issues && issues.length > 0) {
       setFormErrors(
-        Object.fromEntries(issues.map((issue) => [issue.path?.[0], issue.message])),
+        Object.fromEntries(
+          issues.map((issue) => [issue.path?.[0], issue.message])
+        )
       );
       return;
     }
@@ -73,19 +75,19 @@ export default function EmployeeCreate() {
 
     try {
       await createEmployee(formValues);
-      notifications.show('Employee created successfully.', {
-        severity: 'success',
+      notifications.show("Employee created successfully.", {
+        severity: "success",
         autoHideDuration: 3000,
       });
 
-      navigate('/employees');
+      navigate("/employees");
     } catch (createError) {
       notifications.show(
         `Failed to create employee. Reason: ${createError.message}`,
         {
-          severity: 'error',
+          severity: "error",
           autoHideDuration: 3000,
-        },
+        }
       );
       throw createError;
     }
@@ -94,7 +96,10 @@ export default function EmployeeCreate() {
   return (
     <PageContainer
       title="New Employee"
-      breadcrumbs={[{ title: 'Employees', path: '/employees' }, { title: 'New' }]}
+      breadcrumbs={[
+        { title: "Employees", path: "/employees" },
+        { title: "New" },
+      ]}
     >
       <EmployeeForm
         formState={formState}

@@ -1,21 +1,21 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as React from "react";
+import PropTypes from "prop-types";
 
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import Grow from '@mui/material/Grow';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import Grow from "@mui/material/Grow";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from 'react-router';
-import DashboardSidebarContext from '../context/DashboardSidebarContext';
-import { MINI_DRAWER_WIDTH } from '../constants';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Link } from "react-router";
+import DashboardSidebarContext from "../../context/DashboardSidebarContext";
+import { MINI_DRAWER_WIDTH } from "../../constants";
 
 function DashboardSidebarPageItem({
   id,
@@ -31,7 +31,7 @@ function DashboardSidebarPageItem({
 }) {
   const sidebarContext = React.useContext(DashboardSidebarContext);
   if (!sidebarContext) {
-    throw new Error('Sidebar context was used without a provider.');
+    throw new Error("Sidebar context was used without a provider.");
   }
   const {
     onPageItemClick,
@@ -48,21 +48,21 @@ function DashboardSidebarPageItem({
     }
   }, [onPageItemClick, id, nestedNavigation]);
 
-  let nestedNavigationCollapseSx = { display: 'none' };
+  let nestedNavigationCollapseSx = { display: "none" };
   if (mini && fullyCollapsed) {
     nestedNavigationCollapseSx = {
       fontSize: 18,
-      position: 'absolute',
-      top: '41.5%',
-      right: '2px',
-      transform: 'translateY(-50%) rotate(-90deg)',
+      position: "absolute",
+      top: "41.5%",
+      right: "2px",
+      transform: "translateY(-50%) rotate(-90deg)",
     };
   } else if (!mini && fullyExpanded) {
     nestedNavigationCollapseSx = (theme) => ({
       ml: 0.5,
       fontSize: 20,
       transform: `rotate(${expanded ? 0 : -90}deg)`,
-      transition: theme.transitions.create('transform', {
+      transition: theme.transitions.create("transform", {
         easing: theme.transitions.easing.sharp,
         duration: 100,
       }),
@@ -70,10 +70,10 @@ function DashboardSidebarPageItem({
   }
 
   const hasExternalHref = href
-    ? href.startsWith('http://') || href.startsWith('https://')
+    ? href.startsWith("http://") || href.startsWith("https://")
     : false;
 
-  const LinkComponent = hasExternalHref ? 'a' : Link;
+  const LinkComponent = hasExternalHref ? "a" : Link;
 
   const miniNestedNavigationSidebarContextValue = React.useMemo(() => {
     return {
@@ -100,17 +100,17 @@ function DashboardSidebarPageItem({
             }
           : {})}
         sx={{
-          display: 'block',
+          display: "block",
           py: 0,
           px: 1,
-          overflowX: 'hidden',
+          overflowX: "hidden",
         }}
       >
         <ListItemButton
           selected={selected}
           disabled={disabled}
           sx={{
-            height: mini ? 50 : 'auto',
+            height: mini ? 50 : "auto",
           }}
           {...(nestedNavigation && !mini
             ? {
@@ -122,8 +122,8 @@ function DashboardSidebarPageItem({
                 LinkComponent,
                 ...(hasExternalHref
                   ? {
-                      target: '_blank',
-                      rel: 'noopener noreferrer',
+                      target: "_blank",
+                      rel: "noopener noreferrer",
                     }
                   : {}),
                 to: href,
@@ -136,19 +136,19 @@ function DashboardSidebarPageItem({
               sx={
                 mini
                   ? {
-                      position: 'absolute',
-                      left: '50%',
-                      top: 'calc(50% - 6px)',
-                      transform: 'translate(-50%, -50%)',
+                      position: "absolute",
+                      left: "50%",
+                      top: "calc(50% - 6px)",
+                      transform: "translate(-50%, -50%)",
                     }
                   : {}
               }
             >
               <ListItemIcon
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: mini ? 'center' : 'auto',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: mini ? "center" : "auto",
                 }}
               >
                 {icon ?? null}
@@ -161,7 +161,7 @@ function DashboardSidebarPageItem({
                     }}
                   >
                     {title
-                      .split(' ')
+                      .split(" ")
                       .slice(0, 2)
                       .map((titleWord) => titleWord.charAt(0).toUpperCase())}
                   </Avatar>
@@ -171,16 +171,16 @@ function DashboardSidebarPageItem({
                 <Typography
                   variant="caption"
                   sx={{
-                    position: 'absolute',
+                    position: "absolute",
                     bottom: -18,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
+                    left: "50%",
+                    transform: "translateX(-50%)",
                     fontSize: 10,
                     fontWeight: 500,
-                    textAlign: 'center',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                     maxWidth: MINI_DRAWER_WIDTH - 28,
                   }}
                 >
@@ -193,7 +193,7 @@ function DashboardSidebarPageItem({
             <ListItemText
               primary={title}
               sx={{
-                whiteSpace: 'nowrap',
+                whiteSpace: "nowrap",
                 zIndex: 1,
               }}
             />
@@ -207,9 +207,9 @@ function DashboardSidebarPageItem({
           <Grow in={isHovered}>
             <Box
               sx={{
-                position: 'fixed',
+                position: "fixed",
                 left: MINI_DRAWER_WIDTH - 2,
-                pl: '6px',
+                pl: "6px",
               }}
             >
               <Paper
@@ -217,7 +217,7 @@ function DashboardSidebarPageItem({
                 sx={{
                   pt: 0.2,
                   pb: 0.2,
-                  transform: 'translateY(-50px)',
+                  transform: "translateY(-50px)",
                 }}
               >
                 <DashboardSidebarContext.Provider

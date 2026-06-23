@@ -1,15 +1,15 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import ListSubheader from '@mui/material/ListSubheader';
+import * as React from "react";
+import PropTypes from "prop-types";
+import ListSubheader from "@mui/material/ListSubheader";
 
-import DashboardSidebarContext from '../context/DashboardSidebarContext';
-import { DRAWER_WIDTH } from '../constants';
-import getDrawerSxTransitionMixin from '../mixins';
+import DashboardSidebarContext from "../../context/DashboardSidebarContext";
+import { DRAWER_WIDTH } from "../../constants";
+import getDrawerSxTransitionMixin from "../../mixins";
 
 function DashboardSidebarHeaderItem({ children }) {
   const sidebarContext = React.useContext(DashboardSidebarContext);
   if (!sidebarContext) {
-    throw new Error('Sidebar context was used without a provider.');
+    throw new Error("Sidebar context was used without a provider.");
   }
   const {
     mini = false,
@@ -22,18 +22,18 @@ function DashboardSidebarHeaderItem({ children }) {
       sx={[
         {
           fontSize: 12,
-          fontWeight: '600',
+          fontWeight: "600",
           height: mini ? 0 : 36,
           px: 1.5,
           py: 0,
           minWidth: DRAWER_WIDTH,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
           zIndex: 2,
         },
         hasDrawerTransitions
-          ? getDrawerSxTransitionMixin(fullyExpanded, 'height')
+          ? getDrawerSxTransitionMixin(fullyExpanded, "height")
           : null,
       ]}
     >

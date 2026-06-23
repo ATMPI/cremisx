@@ -1,25 +1,25 @@
-import * as React from 'react';
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate, useParams } from 'react-router';
-import dayjs from 'dayjs';
-import { useDialogs } from '../hooks/useDialogs/useDialogs';
-import useNotifications from '../hooks/useNotifications/useNotifications';
+import * as React from "react";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate, useParams } from "react-router";
+import dayjs from "dayjs";
+import { useDialogs } from "../../hooks/useDialogs/useDialogs";
+import useNotifications from "../../hooks/useNotifications/useNotifications";
 import {
   deleteOne as deleteEmployee,
   getOne as getEmployee,
-} from '../data/employees';
-import PageContainer from './PageContainer';
+} from "../../data/employees";
+import PageContainer from "../PageContainer";
 
 export default function EmployeeShow() {
   const { employeeId } = useParams();
@@ -63,10 +63,10 @@ export default function EmployeeShow() {
       `Do you wish to delete ${employee.name}?`,
       {
         title: `Delete employee?`,
-        severity: 'error',
-        okText: 'Delete',
-        cancelText: 'Cancel',
-      },
+        severity: "error",
+        okText: "Delete",
+        cancelText: "Cancel",
+      }
     );
 
     if (confirmed) {
@@ -74,19 +74,19 @@ export default function EmployeeShow() {
       try {
         await deleteEmployee(Number(employeeId));
 
-        navigate('/employees');
+        navigate("/employees");
 
-        notifications.show('Employee deleted successfully.', {
-          severity: 'success',
+        notifications.show("Employee deleted successfully.", {
+          severity: "success",
           autoHideDuration: 3000,
         });
       } catch (deleteError) {
         notifications.show(
           `Failed to delete employee. Reason:' ${deleteError.message}`,
           {
-            severity: 'error',
+            severity: "error",
             autoHideDuration: 3000,
-          },
+          }
         );
       }
       setIsLoading(false);
@@ -94,7 +94,7 @@ export default function EmployeeShow() {
   }, [employee, dialogs, employeeId, navigate, notifications]);
 
   const handleBack = React.useCallback(() => {
-    navigate('/employees');
+    navigate("/employees");
   }, [navigate]);
 
   const renderShow = React.useMemo(() => {
@@ -103,11 +103,11 @@ export default function EmployeeShow() {
         <Box
           sx={{
             flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
             m: 1,
           }}
         >
@@ -124,8 +124,8 @@ export default function EmployeeShow() {
     }
 
     return employee ? (
-      <Box sx={{ flexGrow: 1, width: '100%' }}>
-        <Grid container spacing={2} sx={{ width: '100%' }}>
+      <Box sx={{ flexGrow: 1, width: "100%" }}>
+        <Grid container spacing={2} sx={{ width: "100%" }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Paper sx={{ px: 2, py: 1 }}>
               <Typography variant="overline">Name</Typography>
@@ -146,7 +146,7 @@ export default function EmployeeShow() {
             <Paper sx={{ px: 2, py: 1 }}>
               <Typography variant="overline">Join date</Typography>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                {dayjs(employee.joinDate).format('MMMM D, YYYY')}
+                {dayjs(employee.joinDate).format("MMMM D, YYYY")}
               </Typography>
             </Paper>
           </Grid>
@@ -162,13 +162,17 @@ export default function EmployeeShow() {
             <Paper sx={{ px: 2, py: 1 }}>
               <Typography variant="overline">Full-time</Typography>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                {employee.isFullTime ? 'Yes' : 'No'}
+                {employee.isFullTime ? "Yes" : "No"}
               </Typography>
             </Paper>
           </Grid>
         </Grid>
         <Divider sx={{ my: 3 }} />
-        <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ justifyContent: "space-between" }}
+        >
           <Button
             variant="contained"
             startIcon={<ArrowBackIcon />}
@@ -211,11 +215,11 @@ export default function EmployeeShow() {
     <PageContainer
       title={pageTitle}
       breadcrumbs={[
-        { title: 'Employees', path: '/employees' },
+        { title: "Employees", path: "/employees" },
         { title: pageTitle },
       ]}
     >
-      <Box sx={{ display: 'flex', flex: 1, width: '100%' }}>{renderShow}</Box>
+      <Box sx={{ display: "flex", flex: 1, width: "100%" }}>{renderShow}</Box>
     </PageContainer>
   );
 }

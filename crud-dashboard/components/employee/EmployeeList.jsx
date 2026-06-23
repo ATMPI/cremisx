@@ -1,23 +1,23 @@
-import * as React from 'react';
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-import { DataGrid, GridActionsCellItem, gridClasses } from '@mui/x-data-grid';
-import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useLocation, useNavigate, useSearchParams } from 'react-router';
-import { useDialogs } from '../hooks/useDialogs/useDialogs';
-import useNotifications from '../hooks/useNotifications/useNotifications';
+import * as React from "react";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
+import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
+import AddIcon from "@mui/icons-material/Add";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { useDialogs } from "../../hooks/useDialogs/useDialogs";
+import useNotifications from "../../hooks/useNotifications/useNotifications";
 import {
   deleteOne as deleteEmployee,
   getMany as getEmployees,
-} from '../data/employees';
-import PageContainer from './PageContainer';
+} from "../../data/employees";
+import PageContainer from "../PageContainer";
 
 const INITIAL_PAGE_SIZE = 10;
 
@@ -30,18 +30,18 @@ export default function EmployeeList() {
   const notifications = useNotifications();
 
   const [paginationModel, setPaginationModel] = React.useState({
-    page: searchParams.get('page') ? Number(searchParams.get('page')) : 0,
-    pageSize: searchParams.get('pageSize')
-      ? Number(searchParams.get('pageSize'))
+    page: searchParams.get("page") ? Number(searchParams.get("page")) : 0,
+    pageSize: searchParams.get("pageSize")
+      ? Number(searchParams.get("pageSize"))
       : INITIAL_PAGE_SIZE,
   });
   const [filterModel, setFilterModel] = React.useState(
-    searchParams.get('filter')
-      ? JSON.parse(searchParams.get('filter') ?? '')
-      : { items: [] },
+    searchParams.get("filter")
+      ? JSON.parse(searchParams.get("filter") ?? "")
+      : { items: [] }
   );
   const [sortModel, setSortModel] = React.useState(
-    searchParams.get('sort') ? JSON.parse(searchParams.get('sort') ?? '') : [],
+    searchParams.get("sort") ? JSON.parse(searchParams.get("sort") ?? "") : []
   );
 
   const [rowsState, setRowsState] = React.useState({
@@ -56,16 +56,16 @@ export default function EmployeeList() {
     (model) => {
       setPaginationModel(model);
 
-      searchParams.set('page', String(model.page));
-      searchParams.set('pageSize', String(model.pageSize));
+      searchParams.set("page", String(model.page));
+      searchParams.set("pageSize", String(model.pageSize));
 
       const newSearchParamsString = searchParams.toString();
 
       navigate(
-        `${pathname}${newSearchParamsString ? '?' : ''}${newSearchParamsString}`,
+        `${pathname}${newSearchParamsString ? "?" : ""}${newSearchParamsString}`
       );
     },
-    [navigate, pathname, searchParams],
+    [navigate, pathname, searchParams]
   );
 
   const handleFilterModelChange = React.useCallback(
@@ -76,18 +76,18 @@ export default function EmployeeList() {
         model.items.length > 0 ||
         (model.quickFilterValues && model.quickFilterValues.length > 0)
       ) {
-        searchParams.set('filter', JSON.stringify(model));
+        searchParams.set("filter", JSON.stringify(model));
       } else {
-        searchParams.delete('filter');
+        searchParams.delete("filter");
       }
 
       const newSearchParamsString = searchParams.toString();
 
       navigate(
-        `${pathname}${newSearchParamsString ? '?' : ''}${newSearchParamsString}`,
+        `${pathname}${newSearchParamsString ? "?" : ""}${newSearchParamsString}`
       );
     },
-    [navigate, pathname, searchParams],
+    [navigate, pathname, searchParams]
   );
 
   const handleSortModelChange = React.useCallback(
@@ -95,18 +95,18 @@ export default function EmployeeList() {
       setSortModel(model);
 
       if (model.length > 0) {
-        searchParams.set('sort', JSON.stringify(model));
+        searchParams.set("sort", JSON.stringify(model));
       } else {
-        searchParams.delete('sort');
+        searchParams.delete("sort");
       }
 
       const newSearchParamsString = searchParams.toString();
 
       navigate(
-        `${pathname}${newSearchParamsString ? '?' : ''}${newSearchParamsString}`,
+        `${pathname}${newSearchParamsString ? "?" : ""}${newSearchParamsString}`
       );
     },
-    [navigate, pathname, searchParams],
+    [navigate, pathname, searchParams]
   );
 
   const loadData = React.useCallback(async () => {
@@ -145,18 +145,18 @@ export default function EmployeeList() {
     ({ row }) => {
       navigate(`/employees/${row.id}`);
     },
-    [navigate],
+    [navigate]
   );
 
   const handleCreateClick = React.useCallback(() => {
-    navigate('/employees/new');
+    navigate("/employees/new");
   }, [navigate]);
 
   const handleRowEdit = React.useCallback(
     (employee) => () => {
       navigate(`/employees/${employee.id}/edit`);
     },
-    [navigate],
+    [navigate]
   );
 
   const handleRowDelete = React.useCallback(
@@ -165,10 +165,10 @@ export default function EmployeeList() {
         `Do you wish to delete ${employee.name}?`,
         {
           title: `Delete employee?`,
-          severity: 'error',
-          okText: 'Delete',
-          cancelText: 'Cancel',
-        },
+          severity: "error",
+          okText: "Delete",
+          cancelText: "Cancel",
+        }
       );
 
       if (confirmed) {
@@ -176,8 +176,8 @@ export default function EmployeeList() {
         try {
           await deleteEmployee(Number(employee.id));
 
-          notifications.show('Employee deleted successfully.', {
-            severity: 'success',
+          notifications.show("Employee deleted successfully.", {
+            severity: "success",
             autoHideDuration: 3000,
           });
           loadData();
@@ -185,49 +185,49 @@ export default function EmployeeList() {
           notifications.show(
             `Failed to delete employee. Reason:' ${deleteError.message}`,
             {
-              severity: 'error',
+              severity: "error",
               autoHideDuration: 3000,
-            },
+            }
           );
         }
         setIsLoading(false);
       }
     },
-    [dialogs, notifications, loadData],
+    [dialogs, notifications, loadData]
   );
 
   const initialState = React.useMemo(
     () => ({
       pagination: { paginationModel: { pageSize: INITIAL_PAGE_SIZE } },
     }),
-    [],
+    []
   );
 
   const columns = React.useMemo(
     () => [
-      { field: 'id', headerName: 'ID' },
-      { field: 'name', headerName: 'Name', width: 140 },
-      { field: 'age', headerName: 'Age', type: 'number' },
+      { field: "id", headerName: "ID" },
+      { field: "name", headerName: "Name", width: 140 },
+      { field: "age", headerName: "Age", type: "number" },
       {
-        field: 'joinDate',
-        headerName: 'Join date',
-        type: 'date',
+        field: "joinDate",
+        headerName: "Join date",
+        type: "date",
         valueGetter: (value) => value && new Date(value),
         width: 140,
       },
       {
-        field: 'role',
-        headerName: 'Department',
-        type: 'singleSelect',
-        valueOptions: ['Market', 'Finance', 'Development'],
+        field: "role",
+        headerName: "Department",
+        type: "singleSelect",
+        valueOptions: ["Market", "Finance", "Development"],
         width: 160,
       },
-      { field: 'isFullTime', headerName: 'Full-time', type: 'boolean' },
+      { field: "isFullTime", headerName: "Full-time", type: "boolean" },
       {
-        field: 'actions',
-        type: 'actions',
+        field: "actions",
+        type: "actions",
         flex: 1,
-        align: 'right',
+        align: "right",
         getActions: ({ row }) => [
           <GridActionsCellItem
             key="edit-item"
@@ -244,20 +244,24 @@ export default function EmployeeList() {
         ],
       },
     ],
-    [handleRowEdit, handleRowDelete],
+    [handleRowEdit, handleRowDelete]
   );
 
-  const pageTitle = 'Employees';
+  const pageTitle = "Employees";
 
   return (
     <PageContainer
       title={pageTitle}
       breadcrumbs={[{ title: pageTitle }]}
       actions={
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
           <Tooltip title="Reload data" placement="right" enterDelay={1000}>
             <div>
-              <IconButton size="small" aria-label="refresh" onClick={handleRefresh}>
+              <IconButton
+                size="small"
+                aria-label="refresh"
+                onClick={handleRefresh}
+              >
                 <RefreshIcon />
               </IconButton>
             </div>
@@ -272,7 +276,7 @@ export default function EmployeeList() {
         </Stack>
       }
     >
-      <Box sx={{ flex: 1, width: '100%' }}>
+      <Box sx={{ flex: 1, width: "100%" }}>
         {error ? (
           <Box sx={{ flexGrow: 1 }}>
             <Alert severity="error">{error.message}</Alert>
@@ -300,23 +304,23 @@ export default function EmployeeList() {
             pageSizeOptions={[5, INITIAL_PAGE_SIZE, 25]}
             sx={{
               [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
-                outline: 'transparent',
+                outline: "transparent",
               },
               [`& .${gridClasses.columnHeader}:focus-within, & .${gridClasses.cell}:focus-within`]:
                 {
-                  outline: 'none',
+                  outline: "none",
                 },
               [`& .${gridClasses.row}:hover`]: {
-                cursor: 'pointer',
+                cursor: "pointer",
               },
             }}
             slotProps={{
               loadingOverlay: {
-                variant: 'circular-progress',
-                noRowsVariant: 'circular-progress',
+                variant: "circular-progress",
+                noRowsVariant: "circular-progress",
               },
               baseIconButton: {
-                size: 'small',
+                size: "small",
               },
             }}
           />

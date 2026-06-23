@@ -1,23 +1,30 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Toolbar from '@mui/material/Toolbar';
+import * as React from "react";
+import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Toolbar from "@mui/material/Toolbar";
 
-import PersonIcon from '@mui/icons-material/Person';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import LayersIcon from '@mui/icons-material/Layers';
-import { matchPath, useLocation } from 'react-router';
-import DashboardSidebarContext from '../context/DashboardSidebarContext';
-import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
-import DashboardSidebarPageItem from './DashboardSidebarPageItem';
-import DashboardSidebarHeaderItem from './DashboardSidebarHeaderItem';
-import DashboardSidebarDividerItem from './DashboardSidebarDividerItem';
-import getDrawerSxTransitionMixin from '../mixins';
+import PersonIcon from "@mui/icons-material/Person";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import DescriptionIcon from "@mui/icons-material/Description";
+import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import CategoryIcon from "@mui/icons-material/Category";
+import { matchPath, useLocation } from "react-router";
+import DashboardSidebarContext from "../../context/DashboardSidebarContext";
+import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from "../../constants";
+import {
+  DashboardSidebarPageItem,
+  DashboardSidebarDividerItem,
+  DashboardSidebarHeaderItem,
+} from "./index";
+
+import getDrawerSxTransitionMixin from "../../mixins";
 
 function DashboardSidebar({
   expanded = true,
@@ -31,12 +38,14 @@ function DashboardSidebar({
 
   const [expandedItemIds, setExpandedItemIds] = React.useState([]);
 
-  const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
-  const isOverMdViewport = useMediaQuery(theme.breakpoints.up('md'));
-  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+  const isOverSmViewport = useMediaQuery(theme.breakpoints.up("sm"));
+  const isOverMdViewport = useMediaQuery(theme.breakpoints.up("md"));
+  const prefersReducedMotion = useMediaQuery(
+    "(prefers-reduced-motion: reduce)"
+  );
   const shouldReduceDrawerMotion =
-    theme.motion.reducedMotion === 'always' ||
-    (theme.motion.reducedMotion === 'system' && prefersReducedMotion);
+    theme.motion.reducedMotion === "always" ||
+    (theme.motion.reducedMotion === "system" && prefersReducedMotion);
   const drawerEnteringDuration = shouldReduceDrawerMotion
     ? 0
     : theme.transitions.duration.enteringScreen;
@@ -91,7 +100,7 @@ function DashboardSidebar({
     (newExpanded) => () => {
       setExpanded(newExpanded);
     },
-    [setExpanded],
+    [setExpanded]
   );
 
   const handlePageItemClick = React.useCallback(
@@ -100,15 +109,15 @@ function DashboardSidebar({
         setExpandedItemIds((previousValue) =>
           previousValue.includes(itemId)
             ? previousValue.filter(
-                (previousValueItemId) => previousValueItemId !== itemId,
+                (previousValueItemId) => previousValueItemId !== itemId
               )
-            : [...previousValue, itemId],
+            : [...previousValue, itemId]
         );
       } else if (!isOverSmViewport && !hasNestedNavigation) {
         setExpanded(false);
       }
     },
-    [mini, setExpanded, isOverSmViewport],
+    [mini, setExpanded, isOverSmViewport]
   );
 
   const hasDrawerTransitions =
@@ -123,17 +132,17 @@ function DashboardSidebar({
           aria-label={`${viewport.charAt(0).toUpperCase()}${viewport.slice(1)}`}
           sx={[
             {
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              overflow: 'auto',
-              scrollbarGutter: mini ? 'stable' : 'auto',
-              overflowX: 'hidden',
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              overflow: "auto",
+              scrollbarGutter: mini ? "stable" : "auto",
+              overflowX: "hidden",
               pt: !mini ? 0 : 2,
             },
             hasDrawerTransitions
-              ? getDrawerSxTransitionMixin(isFullyExpanded, 'padding')
+              ? getDrawerSxTransitionMixin(isFullyExpanded, "padding")
               : null,
           ]}
         >
@@ -142,7 +151,7 @@ function DashboardSidebar({
             sx={{
               padding: mini ? 0 : 0.5,
               mb: 4,
-              width: mini ? MINI_DRAWER_WIDTH : 'auto',
+              width: mini ? MINI_DRAWER_WIDTH : "auto",
             }}
           >
             <DashboardSidebarHeaderItem>Main items</DashboardSidebarHeaderItem>
@@ -151,18 +160,22 @@ function DashboardSidebar({
               title="Employees"
               icon={<PersonIcon />}
               href="/employees"
-              selected={!!matchPath('/employees/*', pathname) || pathname === '/'}
+              selected={
+                !!matchPath("/employees/*", pathname) || pathname === "/"
+              }
             />
             <DashboardSidebarDividerItem />
-            <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
+            <DashboardSidebarHeaderItem>
+              Example items
+            </DashboardSidebarHeaderItem>
             <DashboardSidebarPageItem
-              id="reports"
-              title="Reports"
-              icon={<BarChartIcon />}
-              href="/reports"
-              selected={!!matchPath('/reports', pathname)}
-              defaultExpanded={!!matchPath('/reports', pathname)}
-              expanded={expandedItemIds.includes('reports')}
+              id="org"
+              title="Organizations"
+              icon={<ApartmentIcon />}
+              href="/org"
+              selected={!!matchPath("/org", pathname)}
+              defaultExpanded={!!matchPath("/org", pathname)}
+              expanded={expandedItemIds.includes("org")}
               nestedNavigation={
                 <List
                   dense
@@ -174,34 +187,70 @@ function DashboardSidebar({
                   }}
                 >
                   <DashboardSidebarPageItem
-                    id="sales"
-                    title="Sales"
-                    icon={<DescriptionIcon />}
-                    href="/reports/sales"
-                    selected={!!matchPath('/reports/sales', pathname)}
+                    id="orgList"
+                    title="List"
+                    icon={<FormatListBulletedIcon />}
+                    href="/org/list"
+                    selected={!!matchPath("/org/list", pathname)}
                   />
                   <DashboardSidebarPageItem
-                    id="traffic"
-                    title="Traffic"
-                    icon={<DescriptionIcon />}
-                    href="/reports/traffic"
-                    selected={!!matchPath('/reports/traffic', pathname)}
+                    id="orgReport"
+                    title="Report"
+                    icon={<BarChartIcon />}
+                    href="/org/report"
+                    selected={!!matchPath("/org/report", pathname)}
                   />
                 </List>
               }
             />
             <DashboardSidebarPageItem
+              id="equipment"
+              title="Equipment"
+              icon={<PrecisionManufacturingIcon />}
+              href="/equipment"
+              selected={!!matchPath("/equipment", pathname)}
+              defaultExpanded={!!matchPath("/equipment", pathname)}
+              expanded={expandedItemIds.includes("equipment")}
+              nestedNavigation={
+                <List
+                  dense
+                  sx={{
+                    padding: 0,
+                    my: 1,
+                    pl: mini ? 0 : 1,
+                    minWidth: 240,
+                  }}
+                >
+                  <DashboardSidebarPageItem
+                    id="equipmentList"
+                    title="List"
+                    icon={<FormatListBulletedIcon />}
+                    href="/equipment/list"
+                    selected={!!matchPath("/equipment/list", pathname)}
+                  />
+                  <DashboardSidebarPageItem
+                    id="equipmentType"
+                    title="Type"
+                    icon={<CategoryIcon />}
+                    href="/equipment/type"
+                    selected={!!matchPath("/equipment/type", pathname)}
+                  />
+                </List>
+              }
+            />
+
+            {/* <DashboardSidebarPageItem
               id="integrations"
               title="Integrations"
               icon={<LayersIcon />}
               href="/integrations"
-              selected={!!matchPath('/integrations', pathname)}
-            />
+              selected={!!matchPath("/integrations", pathname)}
+            /> */}
           </List>
         </Box>
       </React.Fragment>
     ),
-    [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname],
+    [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname]
   );
 
   const getDrawerSharedSx = React.useCallback(
@@ -209,27 +258,27 @@ function DashboardSidebar({
       const drawerWidth = mini ? MINI_DRAWER_WIDTH : DRAWER_WIDTH;
       const widthTransitionStyles = getDrawerSxTransitionMixin(
         expanded,
-        'width',
+        "width"
       )(drawerTheme);
 
       return {
-        displayPrint: 'none',
+        displayPrint: "none",
         width: drawerWidth,
         flexShrink: 0,
         ...widthTransitionStyles,
-        overflowX: 'hidden',
-        ...(isTemporary ? { position: 'absolute' } : {}),
+        overflowX: "hidden",
+        ...(isTemporary ? { position: "absolute" } : {}),
         [`& .MuiDrawer-paper`]: {
-          position: 'absolute',
+          position: "absolute",
           width: drawerWidth,
-          boxSizing: 'border-box',
-          backgroundImage: 'none',
+          boxSizing: "border-box",
+          backgroundImage: "none",
           ...widthTransitionStyles,
-          overflowX: 'hidden',
+          overflowX: "hidden",
         },
       };
     },
-    [expanded, mini],
+    [expanded, mini]
   );
 
   const sidebarContextValue = React.useMemo(() => {
@@ -261,36 +310,39 @@ function DashboardSidebar({
         sx={[
           {
             display: {
-              xs: 'block',
-              sm: disableCollapsibleSidebar ? 'block' : 'none',
-              md: 'none',
+              xs: "block",
+              sm: disableCollapsibleSidebar ? "block" : "none",
+              md: "none",
             },
           },
           getDrawerSharedSx(true),
         ]}
       >
-        {getDrawerContent('phone')}
+        {getDrawerContent("phone")}
       </Drawer>
       <Drawer
         variant="permanent"
         sx={[
           {
             display: {
-              xs: 'none',
-              sm: disableCollapsibleSidebar ? 'none' : 'block',
-              md: 'none',
+              xs: "none",
+              sm: disableCollapsibleSidebar ? "none" : "block",
+              md: "none",
             },
           },
           getDrawerSharedSx(false),
         ]}
       >
-        {getDrawerContent('tablet')}
+        {getDrawerContent("tablet")}
       </Drawer>
       <Drawer
         variant="permanent"
-        sx={[{ display: { xs: 'none', md: 'block' } }, getDrawerSharedSx(false)]}
+        sx={[
+          { display: { xs: "none", md: "block" } },
+          getDrawerSharedSx(false),
+        ]}
       >
-        {getDrawerContent('desktop')}
+        {getDrawerContent("desktop")}
       </Drawer>
     </DashboardSidebarContext.Provider>
   );
@@ -301,7 +353,7 @@ DashboardSidebar.propTypes = {
     if (props[propName] == null) {
       return null;
     }
-    if (typeof props[propName] !== 'object' || props[propName].nodeType !== 1) {
+    if (typeof props[propName] !== "object" || props[propName].nodeType !== 1) {
       return new Error(`Expected prop '${propName}' to be of type Element`);
     }
     return null;

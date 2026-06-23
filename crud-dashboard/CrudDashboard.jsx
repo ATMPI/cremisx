@@ -1,10 +1,12 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { createHashRouter, RouterProvider } from "react-router-dom";
-import DashboardLayout from "./components/DashboardLayout";
-import EmployeeList from "./components/EmployeeList";
-import EmployeeShow from "./components/EmployeeShow";
-import EmployeeCreate from "./components/EmployeeCreate";
-import EmployeeEdit from "./components/EmployeeEdit";
+import { DashboardLayout } from "./components/layout";
+import EmployeeList from "./components/employee/EmployeeList";
+import EmployeeShow from "./components/employee/EmployeeShow";
+import EmployeeCreate from "./components/employee/EmployeeCreate";
+import EmployeeEdit from "./components/employee/EmployeeEdit";
+//organiation
+import OrganizationList from "./components/organization/OrganizationList";
 import NotificationsProvider from "./hooks/useNotifications/NotificationsProvider";
 import DialogsProvider from "./hooks/useDialogs/DialogsProvider";
 import AppTheme from "../shared-theme/AppTheme";
@@ -35,6 +37,11 @@ const router = createHashRouter([
         path: "/employees/:employeeId/edit",
         Component: EmployeeEdit,
       },
+      {
+        path: "/org/list",
+        Component: OrganizationList,
+      },
+
       // Fallback route for the example routes in dashboard sidebar items
       {
         path: "*",
