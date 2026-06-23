@@ -195,7 +195,7 @@ function DashboardSidebar({
                   />
                   <DashboardSidebarPageItem
                     id="orgReport"
-                    title="Report"
+                    title="Reportx"
                     icon={<BarChartIcon />}
                     href="/org/report"
                     selected={!!matchPath("/org/report", pathname)}
