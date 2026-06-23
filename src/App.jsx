@@ -6,7 +6,21 @@ import "./App.css";
 import { TextField, Button } from "@mui/material";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [message, setMessage] = useState({});
+
+  async function callHelloApi() {
+    try {
+      const response = await fetch("http://localhost:3000/api/hello");
+      if (!response.ok) {
+        throw new Error(`HTTP error: ,${response.status}`);
+      }
+      const data = await response.json();
+      setMessage(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -28,13 +42,8 @@ function App() {
             Edit <code>src/App.jsx</code> and save to test <code>HMRs</code>
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+        {message && message.message}
+        <button onClick={() => callHelloApi()}>Call hello Api</button>
       </section>
 
       <div className="ticks"></div>
