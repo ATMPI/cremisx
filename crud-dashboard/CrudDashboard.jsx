@@ -1,5 +1,5 @@
 import CssBaseline from "@mui/material/CssBaseline";
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { DashboardLayout } from "./components/layout";
 import EmployeeList from "./components/employee/EmployeeList";
 import EmployeeShow from "./components/employee/EmployeeShow";
@@ -17,7 +17,7 @@ import {
   formInputCustomizations,
 } from "./theme/customizations";
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     Component: DashboardLayout,
     children: [
