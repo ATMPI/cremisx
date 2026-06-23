@@ -7,6 +7,6 @@ import SignIn from "../sign-in/SignIn";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <CrudDashboard />
   </StrictMode>
 );
