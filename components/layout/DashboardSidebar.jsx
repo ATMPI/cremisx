@@ -17,14 +17,15 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CategoryIcon from "@mui/icons-material/Category";
 import { matchPath, useLocation } from "react-router";
 import DashboardSidebarContext from "../../context/DashboardSidebarContext";
-import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from "../../constants";
+import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from "../../constant/constants";
 import {
   DashboardSidebarPageItem,
   DashboardSidebarDividerItem,
   DashboardSidebarHeaderItem,
 } from "./index";
 
-import getDrawerSxTransitionMixin from "../../mixins";
+import getDrawerSxTransitionMixin from "../../js/mixins";
+import Button from "@mui/material/Button";
 
 function DashboardSidebar({
   expanded = true,
@@ -239,13 +240,10 @@ function DashboardSidebar({
               }
             />
 
-            {/* <DashboardSidebarPageItem
-              id="integrations"
-              title="Integrations"
-              icon={<LayersIcon />}
-              href="/integrations"
-              selected={!!matchPath("/integrations", pathname)}
-            /> */}
+            <DashboardSidebarDividerItem />
+            <Button onClick={() => localStorage.removeItem("token")}>
+              Logout
+            </Button>
           </List>
         </Box>
       </React.Fragment>

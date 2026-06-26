@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router";
 import DashboardSidebarContext from "../../context/DashboardSidebarContext";
-import { MINI_DRAWER_WIDTH } from "../../constants";
+import { MINI_DRAWER_WIDTH } from "../../constant/constants";
 
 function DashboardSidebarPageItem({
   id,

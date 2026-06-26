@@ -24,6 +24,7 @@ export default function EmployeeCreate() {
   }));
   const formValues = formState.values;
   const formErrors = formState.errors;
+  console.log("formState", formState);
 
   const setFormValues = React.useCallback((newFormValues) => {
     setFormState((previousState) => ({

@@ -1,5 +1,5 @@
 // import SvgIcon from "@mui/material/SvgIcon";
-import logo from "../../src/assets/CREMIS_NEW_02.svg";
+import logo from "../src/assets/CREMIS_NEW_02.svg";
 
 export default function SitemarkIcon() {
   return (

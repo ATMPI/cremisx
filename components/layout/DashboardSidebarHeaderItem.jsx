@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import ListSubheader from "@mui/material/ListSubheader";
 
 import DashboardSidebarContext from "../../context/DashboardSidebarContext";
-import { DRAWER_WIDTH } from "../../constants";
-import getDrawerSxTransitionMixin from "../../mixins";
+import { DRAWER_WIDTH } from "../../constant/constants";
+import getDrawerSxTransitionMixin from "../../js/mixins";
 
 function DashboardSidebarHeaderItem({ children }) {
   const sidebarContext = React.useContext(DashboardSidebarContext);

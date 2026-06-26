@@ -1,11 +1,11 @@
 function getReducedMotionStyles(theme, transition) {
   return {
-    transition: theme.motion.reducedMotion === 'always' ? 'none' : transition,
-    '@media (prefers-reduced-motion: reduce)': {
+    transition: theme.motion.reducedMotion === "always" ? "none" : transition,
+    "@media (prefers-reduced-motion: reduce)": {
       transition:
-        theme.motion.reducedMotion === 'always' ||
-        theme.motion.reducedMotion === 'system'
-          ? 'none'
+        theme.motion.reducedMotion === "always" ||
+        theme.motion.reducedMotion === "system"
+          ? "none"
           : transition,
     },
   };
@@ -20,6 +20,6 @@ export default function mixins(isExpanded, property) {
         duration: isExpanded
           ? theme.transitions.duration.enteringScreen
           : theme.transitions.duration.leavingScreen,
-      }),
+      })
     );
 }

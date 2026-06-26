@@ -13,14 +13,16 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import ForgotPassword from "./components/ForgotPassword";
-import AppTheme from "../shared-theme/AppTheme";
-import ColorModeSelect from "../shared-theme/ColorModeSelect";
+import ForgotPassword from "./ForgotPassword";
+import AppTheme from "../../shared-theme/AppTheme";
+import ColorModeSelect from "../../shared-theme/ColorModeSelect";
+import api from "../../src/api";
+import useNotifications from "../../hooks/useNotifications/useNotifications";
 import {
   // GoogleIcon,
   // FacebookIcon,
   SitemarkIcon,
-} from "./components/CustomIcons";
+} from "./CustomIcons";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -70,6 +72,7 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const notifications = useNotifications();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,16 +82,34 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!validateInputs()) {
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const email = data.get("email");
+    const password = data.get("password");
+
+    try {
+      const response = await api.post("/users/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem("token", response.data.token);
+
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.error(error);
+      notifications.show("Invalid username or password.", {
+        severity: "error",
+        autoHideDuration: 3000,
+      });
+    }
   };
 
   const validateInputs = () => {
@@ -106,7 +127,7 @@ export default function SignIn(props) {
       setEmailErrorMessage("");
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 4) {
       setPasswordError(true);
       setPasswordErrorMessage("Password must be at least 6 characters long.");
       isValid = false;
@@ -187,12 +208,7 @@ export default function SignIn(props) {
               label="Remember me"
             />
             <ForgotPassword open={open} handleClose={handleClose} />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}
-            >
+            <Button type="submit" fullWidth variant="contained">
               Sign in
             </Button>
             <Link
