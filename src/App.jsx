@@ -12,6 +12,7 @@ import DialogsProvider from "../hooks/useDialogs/DialogsProvider";
 import AppTheme from "../shared-theme/AppTheme";
 import SignIn from "../components/signin/SignIn";
 import ProtectedRoute from "./ProtectedRoute";
+import TestOnlyComponent from "../components/TestOnlyComponent";
 import {
   dataGridCustomizations,
   datePickersCustomizations,
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
             <OrganizationList />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/TestOnlyComponent",
+        element: <TestOnlyComponent />,
       },
 
       // Fallback route for the example routes in dashboard sidebar items

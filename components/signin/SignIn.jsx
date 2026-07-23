@@ -18,6 +18,8 @@ import AppTheme from "../../shared-theme/AppTheme";
 import ColorModeSelect from "../../shared-theme/ColorModeSelect";
 import api from "../../src/api";
 import useNotifications from "../../hooks/useNotifications/useNotifications";
+import { useAuth } from "../../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import {
   // GoogleIcon,
   // FacebookIcon,
@@ -67,12 +69,14 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
+  const [usernameError, setUsernameError] = React.useState(false);
+  const [usernameErrorMessage, setUsernameErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const notifications = useNotifications();
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -91,18 +95,21 @@ export default function SignIn(props) {
 
     const data = new FormData(event.currentTarget);
 
-    const email = data.get("email");
+    const username = data.get("username");
     const password = data.get("password");
 
     try {
       const response = await api.post("/users/login", {
-        email,
+        username,
         password,
       });
 
       localStorage.setItem("token", response.data.token);
+      console.log(response.data);
+      setUser(response.data.user);
+      console.log("After setUser");
 
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       notifications.show("Invalid username or password.", {
@@ -113,18 +120,18 @@ export default function SignIn(props) {
   };
 
   const validateInputs = () => {
-    const email = document.getElementById("email");
+    const username = document.getElementById("username");
     const password = document.getElementById("password");
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+    if (!username.value) {
+      setUsernameError(true);
+      setUsernameErrorMessage("Username is Required.");
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
+      setUsernameError(false);
+      setUsernameErrorMessage("");
     }
 
     if (!password.value || password.value.length < 4) {
@@ -170,20 +177,20 @@ export default function SignIn(props) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="username">Username</FormLabel>
               <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
+                error={usernameError}
+                helperText={usernameErrorMessage}
+                id="username"
+                type="text"
+                name="username"
+                placeholder="username"
+                autoComplete="username"
                 autoFocus
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? "error" : "primary"}
+                color={usernameError ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>

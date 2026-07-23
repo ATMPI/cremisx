@@ -10,8 +10,18 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router";
-import ThemeSwitcher from "../ThemeSwitcher";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import { useAuth } from "../../context/AuthProvider";
+import { Profile, Setting } from "../signin/UserAccount";
+
+// import ThemeSwitcher from "../ThemeSwitcher";
+import { Divider, ListItemIcon, ListItemText } from "@mui/material";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   borderWidth: 0,
@@ -34,10 +44,30 @@ const LogoContainer = styled("div")({
 
 function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
   const theme = useTheme();
+  const { user } = useAuth();
+  const [profileOpen, setProfileOpen] = React.useState(false);
+  const [settingOpen, setSettingOpen] = React.useState(false);
 
   const handleMenuOpen = React.useCallback(() => {
     onToggleMenu(!menuOpen);
   }, [menuOpen, onToggleMenu]);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openProfile = () => {
+    setAnchorEl(null);
+    setProfileOpen(true);
+  };
+  const openSetting = () => {
+    setAnchorEl(null);
+    setSettingOpen(true);
+  };
 
   const getMenuIcon = React.useCallback(
     (isExpanded) => {
@@ -69,51 +99,139 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
   );
 
   return (
-    <AppBar color="inherit" position="absolute" sx={{ displayPrint: "none" }}>
-      <Toolbar sx={{ backgroundColor: "inherit", mx: { xs: -0.75, sm: -1 } }}>
-        <Stack
-          direction="row"
-          sx={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            width: "100%",
-          }}
-        >
-          <Stack direction="row" sx={{ alignItems: "center" }}>
-            <Box sx={{ mr: 1 }}>{getMenuIcon(menuOpen)}</Box>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <Stack direction="row" sx={{ alignItems: "center" }}>
-                {logo ? <LogoContainer>{logo}</LogoContainer> : null}
-                {title ? (
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: (theme.vars ?? theme).palette.primary.main,
-                      fontWeight: "700",
-                      ml: 1,
-                      whiteSpace: "nowrap",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {title}
-                  </Typography>
-                ) : null}
-              </Stack>
-            </Link>
-          </Stack>
+    <>
+      <AppBar color="inherit" position="absolute" sx={{ displayPrint: "none" }}>
+        <Toolbar sx={{ backgroundColor: "inherit", mx: { xs: -0.75, sm: -1 } }}>
           <Stack
             direction="row"
-            spacing={1}
-            sx={{ alignItems: "center", marginLeft: "auto" }}
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              width: "100%",
+            }}
           >
             <Stack direction="row" sx={{ alignItems: "center" }}>
-              <ThemeSwitcher />
+              <Box sx={{ mr: 1 }}>{getMenuIcon(menuOpen)}</Box>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Stack direction="row" sx={{ alignItems: "center" }}>
+                  {logo ? <LogoContainer>{logo}</LogoContainer> : null}
+                  {title ? (
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: (theme.vars ?? theme).palette.primary.main,
+                        fontWeight: "700",
+                        ml: 1,
+                        whiteSpace: "nowrap",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {title}
+                    </Typography>
+                  ) : null}
+                </Stack>
+              </Link>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ alignItems: "center", marginLeft: "auto" }}
+            >
+              <Stack>Hi! {user?.firstname}</Stack>
+              <Stack direction="row" sx={{ alignItems: "center" }}>
+                <div>
+                  <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircleOutlinedIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        px: 2,
+                        py: 2,
+                      }}
+                    >
+                      <Avatar
+                        src="https://i.pravatar.cc/150?img=12"
+                        sx={{ width: 56, height: 56 }}
+                      />
+
+                      <Box>
+                        <Typography fontWeight={600}>
+                          {user?.firstname + " " + user?.lastname}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {user?.email}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Divider />
+                    <MenuItem onClick={openProfile}>
+                      <ListItemIcon>
+                        <AccountCircleOutlinedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>My Profile</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={openSetting}>
+                      <ListItemIcon>
+                        <SettingsOutlinedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Settings</ListItemText>
+                    </MenuItem>
+                    <Divider />
+                    {/* <MenuItem onClick={handleClose}>
+                      <ThemeSwitcher />
+                    </MenuItem> */}
+                    <MenuItem onClick={handleClose}>
+                      <ListItemIcon>
+                        <LogoutOutlinedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Logout</ListItemText>
+                    </MenuItem>
+                  </Menu>
+                </div>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+      <Profile
+        open={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        user={user}
+      />
+      <Setting
+        open={settingOpen}
+        onClose={() => {
+          setSettingOpen(false);
+        }}
+        user={user}
+      />
+    </>
   );
 }
 

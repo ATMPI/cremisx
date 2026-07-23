@@ -20,16 +20,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router";
 import dayjs from "dayjs";
 
-function EmployeeForm(props) {
-  const {
-    formState,
-    onFieldChange,
-    onSubmit,
-    onReset,
-    submitButtonLabel,
-    backButtonPath,
-  } = props;
-
+function EmployeeForm({
+  formState,
+  onFieldChange,
+  onSubmit,
+  onReset,
+  submitButtonLabel,
+  backButtonPath,
+}) {
   const formValues = formState.values;
   const formErrors = formState.errors;
 
