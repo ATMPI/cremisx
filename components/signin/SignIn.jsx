@@ -163,7 +163,7 @@ export default function SignIn(props) {
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Sign in
+            Log in
           </Typography>
           <Box
             component="form"
@@ -184,7 +184,7 @@ export default function SignIn(props) {
                 id="username"
                 type="text"
                 name="username"
-                placeholder="username"
+                placeholder="Username"
                 autoComplete="username"
                 autoFocus
                 required
