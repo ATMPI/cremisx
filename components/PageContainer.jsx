@@ -1,47 +1,49 @@
-'use client';
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs';
-import Container from '@mui/material/Container';
-import MuiLink from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
-import { Link } from 'react-router';
+"use client";
+import * as React from "react";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Breadcrumbs, { breadcrumbsClasses } from "@mui/material/Breadcrumbs";
+import Container from "@mui/material/Container";
+import MuiLink from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import { Link } from "react-router";
 
-const PageContentHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
+const PageContentHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
   gap: theme.spacing(2),
 }));
 
 const PageHeaderBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
-  margin: theme.spacing(1, 0),
+  //create a custom breadcrumbs
+  margin: theme.spacing(1, 0), // change the margin with helper
   [`& .${breadcrumbsClasses.separator}`]: {
+    // find this class inside the component . classes from mui classes list
     color: (theme.vars || theme).palette.action.disabled,
     margin: 1,
   },
   [`& .${breadcrumbsClasses.ol}`]: {
-    alignItems: 'center',
+    alignItems: "center",
   },
 }));
 
-const PageHeaderToolbar = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
+const PageHeaderToolbar = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
   gap: theme.spacing(1),
   // Ensure the toolbar is always on the right side, even after wrapping
-  marginLeft: 'auto',
+  marginLeft: "auto",
 }));
 
 function PageContainer(props) {
   const { children, breadcrumbs, title, actions = null } = props;
 
   return (
-    <Container sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <Container sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
       <Stack sx={{ flex: 1, my: 2 }} spacing={2}>
         <Stack>
           <PageHeaderBreadcrumbs
@@ -63,7 +65,7 @@ function PageContainer(props) {
                   ) : (
                     <Typography
                       key={index}
-                      sx={{ color: 'text.primary', fontWeight: 600 }}
+                      sx={{ color: "text.primary", fontWeight: 600 }}
                     >
                       {breadcrumb.title}
                     </Typography>
@@ -76,7 +78,7 @@ function PageContainer(props) {
             <PageHeaderToolbar>{actions}</PageHeaderToolbar>
           </PageContentHeader>
         </Stack>
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
           {children}
         </Box>
       </Stack>
@@ -90,7 +92,7 @@ PageContainer.propTypes = {
     PropTypes.shape({
       path: PropTypes.string,
       title: PropTypes.string.isRequired,
-    }),
+    })
   ),
   children: PropTypes.node,
   title: PropTypes.string,
