@@ -23,6 +23,30 @@ const INITIAL_EMPLOYEES_STORE = [
     role: "Development",
     isFullTime: true,
   },
+  {
+    id: 4,
+    name: "Daisy McCarthy",
+    age: 29,
+    joinDate: "2025-07-16T00:00:00.000Z",
+    role: "Market",
+    isFullTime: true,
+  },
+  {
+    id: 5,
+    name: "Lydia McCarthy",
+    age: 32,
+    joinDate: "2025-07-16T00:00:00.000Z",
+    role: "Finance",
+    isFullTime: false,
+  },
+  ...Array.from({ length: 100 }, (_, i) => ({
+    id: i + 6,
+    name: `Employee ${i + 6}`,
+    age: 20 + (i % 30),
+    joinDate: new Date(2025, 0, 1 + (i % 365)).toISOString(),
+    role: ["Market", "Finance", "Development"][i % 3],
+    isFullTime: i % 2 === 0,
+  })),
 ];
 
 export function getEmployeesStore() {

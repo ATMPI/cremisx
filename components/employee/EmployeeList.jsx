@@ -40,6 +40,8 @@ export default function EmployeeList() {
       ? JSON.parse(searchParams.get("filter") ?? "")
       : { items: [] }
   );
+
+  console.log("filterModel", filterModel);
   const [sortModel, setSortModel] = React.useState(
     searchParams.get("sort") ? JSON.parse(searchParams.get("sort") ?? "") : []
   );
@@ -82,6 +84,7 @@ export default function EmployeeList() {
       }
 
       const newSearchParamsString = searchParams.toString();
+      console.log("filter model change", model);
 
       navigate(
         `${pathname}${newSearchParamsString ? "?" : ""}${newSearchParamsString}`
@@ -119,6 +122,8 @@ export default function EmployeeList() {
         sortModel,
         filterModel,
       });
+
+      console.log("listData", listData);
 
       setRowsState({
         rows: listData.items,
@@ -286,43 +291,43 @@ export default function EmployeeList() {
             rows={rowsState.rows}
             rowCount={rowsState.rowCount}
             columns={columns}
-            // pagination
-            // sortingMode="server"
-            // filterMode="server"
-            // paginationMode="server"
-            // paginationModel={paginationModel}
-            // onPaginationModelChange={handlePaginationModelChange}
-            // sortModel={sortModel}
-            // onSortModelChange={handleSortModelChange}
-            // filterModel={filterModel}
-            // onFilterModelChange={handleFilterModelChange}
-            // disableRowSelectionOnClick
-            // onRowClick={handleRowClick}
-            // loading={isLoading}
+            pagination
+            sortingMode="server"
+            filterMode="server"
+            paginationMode="server"
+            paginationModel={paginationModel}
+            onPaginationModelChange={handlePaginationModelChange}
+            sortModel={sortModel}
+            onSortModelChange={handleSortModelChange}
+            filterModel={filterModel}
+            onFilterModelChange={handleFilterModelChange}
+            disableRowSelectionOnClick
+            onRowClick={handleRowClick}
+            loading={isLoading}
             initialState={initialState}
-            // showToolbar
+            showToolbar
             pageSizeOptions={[5, INITIAL_PAGE_SIZE, 25]}
-            // sx={{
-            //   [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
-            //     outline: "transparent",
-            //   },
-            //   [`& .${gridClasses.columnHeader}:focus-within, & .${gridClasses.cell}:focus-within`]:
-            //     {
-            //       outline: "none",
-            //     },
-            //   [`& .${gridClasses.row}:hover`]: {
-            //     cursor: "pointer",
-            //   },
-            // }}
-            // slotProps={{
-            //   loadingOverlay: {
-            //     variant: "circular-progress",
-            //     noRowsVariant: "circular-progress",
-            //   },
-            //   baseIconButton: {
-            //     size: "small",
-            //   },
-            // }}
+            sx={{
+              [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
+                outline: "transparent",
+              },
+              [`& .${gridClasses.columnHeader}:focus-within, & .${gridClasses.cell}:focus-within`]:
+                {
+                  outline: "none",
+                },
+              [`& .${gridClasses.row}:hover`]: {
+                cursor: "pointer",
+              },
+            }}
+            slotProps={{
+              loadingOverlay: {
+                variant: "circular-progress",
+                noRowsVariant: "circular-progress",
+              },
+              baseIconButton: {
+                size: "small",
+              },
+            }}
           />
         )}
       </Box>

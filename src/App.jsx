@@ -6,7 +6,9 @@ import EmployeeShow from "../components/employee/EmployeeShow";
 import EmployeeCreate from "../components/employee/EmployeeCreate";
 import EmployeeEdit from "../components/employee/EmployeeEdit";
 //organiation
+import OrganizationEdit from "../components/organization/OrganizationEdit";
 import OrganizationList from "../components/organization/OrganizationList";
+
 import NotificationsProvider from "../hooks/useNotifications/NotificationsProvider";
 import DialogsProvider from "../hooks/useDialogs/DialogsProvider";
 import AppTheme from "../shared-theme/AppTheme";
@@ -19,6 +21,7 @@ import {
   sidebarCustomizations,
   formInputCustomizations,
 } from "../theme/customizations";
+import Practice from "../components/Practice";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/org/:orgId/edit",
+        element: (
+          <ProtectedRoute>
+            <OrganizationEdit />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "/TestOnlyComponent",
         element: <TestOnlyComponent />,
       },
@@ -103,5 +114,6 @@ export default function CrudDashboard(props) {
         </DialogsProvider>
       </NotificationsProvider>
     </AppTheme>
+    // <Practice></Practice>
   );
 }
