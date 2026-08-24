@@ -28,9 +28,13 @@ export default function OrganizationForm({
     console.log(event);
   });
 
-  const handleFieldTextChange = (e) => {
-    console.log("name", e.target.value);
-  };
+  const handleFieldTextChange = React.useCallback(
+    (e) => {
+      onFieldChange(e.target.name, e.target.value);
+    },
+    [onFieldChange]
+  );
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formEl = event.currentTarget;
@@ -62,6 +66,7 @@ export default function OrganizationForm({
               name="emailaddress"
               label="Email Address"
               fullWidth
+              onChange={handleFieldTextChange}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }} sx={{ display: "flex" }}>

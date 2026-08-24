@@ -31,6 +31,7 @@ function EmployeeEditForm({ initialValues, onSubmit }) {
       ...previousState,
       values: newFormValues,
     }));
+    console.log("formValues", formValues);
   }, []);
 
   const setFormErrors = React.useCallback((newFormErrors) => {
@@ -51,7 +52,7 @@ function EmployeeEditForm({ initialValues, onSubmit }) {
       };
 
       const newFormValues = { ...formValues, [name]: value };
-
+      console.log("formValues", newFormValues);
       setFormValues(newFormValues);
       validateField(newFormValues);
     },

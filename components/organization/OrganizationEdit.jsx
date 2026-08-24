@@ -9,19 +9,31 @@ import { validate as validateOrganization } from "../../data/organization";
 function OrganizationEditForm() {
   const { orgId } = useParams();
   const [formState, setFormState] = React.useState({});
+  const formValues = formState.value;
 
-  const setFormValues = () => {};
+  const setFormValues = React.useCallback((newFormValues) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      values: newFormValues,
+    }));
+    console.log("formValues", formValues);
+  }, []);
 
-  const handleFromFieldChange = () => {};
+  const handleFormFieldChange = React.useCallback(
+    (name, value) => {
+      const newFormValues = { ...formValues, [name]: value };
+      setFormValues(newFormValues);
+    },
+    [formValues, setFormValues]
+  );
   const handleFormSubmit = () => {
     const { issues } = validateOrganization({ email: "cummi" });
-    console.log("issues", issues);
   };
   return (
     <OrganizationForm
       formState={formState}
       onSubmit={handleFormSubmit}
-      onFieldChange={handleFromFieldChange}
+      onFieldChange={handleFormFieldChange}
     />
   );
 }
@@ -31,7 +43,6 @@ export default function OrganizationEdit() {
   const [isLoading, setIsLoading] = React.useState();
 
   const renderEdit = () => {
-    console.log("redered");
     return <OrganizationEditForm />;
   };
 
