@@ -1,7 +1,10 @@
 import React from "react";
 import PageContainer from "../PageContainer";
-import { Stack } from "@mui/material";
-import { getMany as getOrganizations } from "../../data/organization";
+import { Button, IconButton, Stack, Tooltip } from "@mui/material";
+import {
+  getMany as getOrganizations,
+  deleteOne as deleteOrganization,
+} from "../../data/organization";
 import Box from "@mui/material/Box";
 import {
   useLocation,
@@ -12,6 +15,10 @@ import {
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
+import { useDialogs } from "../../hooks/useDialogs/useDialogs";
+import useNotifications from "../../hooks/useNotifications/useNotifications";
 
 export default function OrganizationList() {
   const pageTitle = "Organizations";
@@ -20,6 +27,8 @@ export default function OrganizationList() {
   const [isLoading, setIsLoading] = React.useState();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const notifications = useNotifications();
+  const dialog = useDialogs();
   const INITIAL_PAGE_SIZE = 10;
   const [rowsState, setRowsState] = React.useState({
     rows: [],
@@ -48,8 +57,6 @@ export default function OrganizationList() {
     }),
     []
   );
-
-  // const handleRowEdit = React.useCallback();
 
   const handlePaginationModelChange = React.useCallback(
     (model) => {
@@ -113,16 +120,16 @@ export default function OrganizationList() {
     [navigate, pathname, searchParams]
   );
 
-  const handleRowEdit = React.useCallback(
-    (org) => () => {
-      navigate(`/org/${org.recordno}/edit`);
+  const handleRowClick = React.useCallback(
+    ({ row }) => {
+      navigate(`/org/${row.recordno}/view`);
     },
     [navigate]
   );
 
   const loadData = React.useCallback(async () => {
     setError(null);
-    setIsLoading(null);
+    setIsLoading(true);
 
     try {
       const listData = await getOrganizations({
@@ -140,9 +147,60 @@ export default function OrganizationList() {
     setIsLoading(false);
   }, [paginationModel, filterModel, sortModel]);
 
+  const handleRowDelete = React.useCallback(
+    (organization) => async () => {
+      const confirmed = await dialog.confirm(
+        `Do you wish to delete ${organization.company_name}?`,
+        {
+          title: `Delete Organization?`,
+          severity: "warning",
+          okText: "Yes, Delete it",
+          cancelText: "No, Cancel",
+        }
+      );
+      console.log("organization", organization);
+      if (confirmed) {
+        setIsLoading(true);
+        try {
+          await deleteOrganization(Number(organization.recordno));
+
+          notifications.show("Organization deleted successfully.", {
+            severity: "success",
+            autoHideDuration: 3000,
+          });
+          loadData();
+        } catch (deleteError) {
+          notifications.show(
+            `Failed to delete Organization. Reason: ${deleteError}`,
+            {
+              severity: "error",
+              autoHideDuration: 3000,
+            }
+          );
+        }
+      }
+    },
+    [dialog, notifications, loadData]
+  );
+
+  const handleRowEdit = React.useCallback(
+    (org) => () => {
+      navigate(`/org/${org.recordno}/edit`);
+    },
+    [navigate]
+  );
+
   React.useEffect(() => {
     loadData();
   }, [loadData]);
+  const handleRefresh = React.useCallback(() => {
+    if (!isLoading) {
+      loadData();
+    }
+  }, [isLoading, loadData]);
+  const handleCreateClick = React.useCallback(() => {
+    navigate("/org/new");
+  }, [navigate]);
 
   const columns = React.useMemo(
     () => [
@@ -166,12 +224,12 @@ export default function OrganizationList() {
             key="delete-item"
             icon={<DeleteIcon />}
             label="Delete"
-            // onClick={handleRowEdit(row)}
+            onClick={handleRowDelete(row)}
           />,
         ],
       },
     ],
-    [handleRowEdit]
+    [handleRowEdit, handleRowDelete]
   );
 
   return (
@@ -179,11 +237,26 @@ export default function OrganizationList() {
       title="Organization List"
       breadcrumbs={[{ title: pageTitle }]}
       actions={
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ alignItems: "center" }}
-        ></Stack>
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+          <Tooltip title="Reload data" placement="right" enterDelay={1000}>
+            <div>
+              <IconButton
+                size="small"
+                aria-label="refresh"
+                onClick={handleRefresh}
+              >
+                <RefreshIcon />
+              </IconButton>
+            </div>
+          </Tooltip>
+          <Button
+            variant="contained"
+            onClick={handleCreateClick}
+            startIcon={<AddIcon />}
+          >
+            Create
+          </Button>
+        </Stack>
       }
     >
       <Box>
@@ -202,6 +275,7 @@ export default function OrganizationList() {
           onPaginationModelChange={handlePaginationModelChange}
           onFilterModelChange={handleFilterModelChange}
           onSortModelChange={handleSortModelChange}
+          onRowClick={handleRowClick}
           getRowId={(row) => row.recordno}
           showToolbar
           sx={{

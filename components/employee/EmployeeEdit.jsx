@@ -31,8 +31,8 @@ function EmployeeEditForm({ initialValues, onSubmit }) {
       ...previousState,
       values: newFormValues,
     }));
-    console.log("formValues", formValues);
   }, []);
+  console.log("formState", formState);
 
   const setFormErrors = React.useCallback((newFormErrors) => {
     setFormState((previousState) => ({

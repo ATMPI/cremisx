@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -34,7 +35,7 @@ function DashboardSidebar({
   container,
 }) {
   const theme = useTheme();
-
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [expandedItemIds, setExpandedItemIds] = React.useState([]);
@@ -120,6 +121,11 @@ function DashboardSidebar({
     },
     [mini, setExpanded, isOverSmViewport]
   );
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   const hasDrawerTransitions =
     isOverSmViewport && (!disableCollapsibleSidebar || isOverMdViewport);
@@ -241,9 +247,7 @@ function DashboardSidebar({
             />
 
             <DashboardSidebarDividerItem />
-            <Button onClick={() => localStorage.removeItem("token")}>
-              Logout
-            </Button>
+            <Button onClick={handleLogout}>Logout</Button>
           </List>
         </Box>
       </React.Fragment>

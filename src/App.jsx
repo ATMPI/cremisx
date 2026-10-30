@@ -22,7 +22,8 @@ import {
   formInputCustomizations,
 } from "../theme/customizations";
 import Practice from "../components/Practice";
-
+import OrganizationShow from "../components/organization/OrganizationShow";
+import OrganizationCreate from "../components/organization/OrganizationCreate";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -76,6 +77,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <OrganizationEdit />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/org/:orgId/view",
+        element: (
+          <ProtectedRoute>
+            <OrganizationShow />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/org/new",
+        element: (
+          <ProtectedRoute>
+            <OrganizationCreate />
           </ProtectedRoute>
         ),
       },
